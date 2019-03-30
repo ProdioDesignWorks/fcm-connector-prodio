@@ -15,6 +15,7 @@ export default class Fcm {
   }
 
   sendAppPushNotification(notificationJson) {
+    console.log(notificationJson);
     return new Promise((resolve, reject) => {
       var successStatus = true, responseMsg = '';
       const payload = {
@@ -63,21 +64,22 @@ export default class Fcm {
   }
 
   sendWebPushNotification(notificationJson) {
-    const payload = {
-      notification: {
-        title: notificationJson.notification.title,
-        body: notificationJson.notification.body,
-        clickAction: notificationJson.notification.clickAction,
-        color: notificationJson.notification.color,
-        icon: notificationJson.notification.icon,
-        sound: notificationJson.notification.sound,
-        show_in_foreground: notificationJson.notification.show_in_foreground,
-        priority: notificationJson.notification.priority,
-        content_available: notificationJson.notification.content_available,
-        tag: notificationJson.notification.tag
-      },
-      data: notificationJson.notificationPayload
+    const notification = {
+      title: notificationJson.notification.title,
+      body: notificationJson.notification.body,
+      clickAction: notificationJson.notification.clickAction,
+      color: notificationJson.notification.color,
+      icon: notificationJson.notification.icon,
+      sound: notificationJson.notification.sound,
+      show_in_foreground: notificationJson.notification.show_in_foreground,
+      priority: notificationJson.notification.priority,
+      content_available: notificationJson.notification.content_available,
+      tag: notificationJson.notification.tag
     };
+    notificationJson.data.notification = notification;
+    const payload = {
+      data: notificationJson.data
+    }
     return new Promise((resolve, reject) => {
       admin.messaging().sendToDevice(notificationJson.notificationTokens, payload)
         .then(response => {
