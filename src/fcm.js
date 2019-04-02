@@ -74,11 +74,12 @@ export default class Fcm {
       show_in_foreground: notificationJson.notification.show_in_foreground,
       priority: notificationJson.notification.priority,
       content_available: notificationJson.notification.content_available,
-      tag: notificationJson.notification.tag
+      tag: notificationJson.notification.tag,
+      data: JSON.stringify(notificationJson.notificationPayload)
     };
-    notificationJson.data.notification = notification;
+    notificationJson.notificationPayload.notification = JSON.stringify(notification);
     const payload = {
-      data: notificationJson.data
+      data: notificationJson.notificationPayload
     }
     return new Promise((resolve, reject) => {
       admin.messaging().sendToDevice(notificationJson.notificationTokens, payload)
