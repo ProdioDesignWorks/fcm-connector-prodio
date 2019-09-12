@@ -171,7 +171,7 @@ export default class Fcm {
           data: JSON.stringify(notificationJson.notificationPayload)
         };
         notificationJson.notification = JSON.stringify(notification);
-        notificationJson.notificationPayload = JSON.stringify(notification.notificationPayload);
+        notificationJson.notificationPayload = JSON.stringify(notificationJson.notificationPayload);
         const payload = {
           data: notificationJson,
           topic
