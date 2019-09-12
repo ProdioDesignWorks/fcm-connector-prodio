@@ -157,21 +157,24 @@ export default class Fcm {
   sendNotificationToTopic(notificationJson, topic){
     return new Promise((resolve, reject) => {
       try{
+        const notification = {
+          title: notificationJson.notification.title,
+          body: notificationJson.notification.body,
+          clickAction: notificationJson.notification.clickAction,
+          color: notificationJson.notification.color,
+          icon: notificationJson.notification.icon,
+          sound: notificationJson.notification.sound,
+          show_in_foreground: notificationJson.notification.show_in_foreground,
+          priority: notificationJson.notification.priority,
+          content_available: notificationJson.notification.content_available,
+          tag: notificationJson.notification.tag,
+          data: JSON.stringify(notificationJson.notificationPayload)
+        };
+        notificationJson.notification = JSON.stringify(notification);
+        notificationJson.notificationPayload = JSON.stringify(notification.notificationPayload);
         const payload = {
-          notification: {
-            title: notificationJson.notification.title,
-            body: notificationJson.notification.body,
-            clickAction: notificationJson.notification.clickAction,
-            color: notificationJson.notification.color,
-            icon: notificationJson.notification.icon,
-            sound: notificationJson.notification.sound,
-            show_in_foreground: notificationJson.notification.show_in_foreground,
-            priority: notificationJson.notification.priority,
-            content_available: notificationJson.notification.content_available,
-            tag: notificationJson.notification.tag
-          },
-          data: notificationJson.notificationPayload,
-          topic,
+          data: notificationJson,
+          topic
         };
 
         admin.messaging().send(payload).then(
